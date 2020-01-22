@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane prefHeight="384.0" prefWidth="269.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.westga.cs3151.the8puzzle.view.PuzzleCodeBehind">
+   <children>
+      <Label fx:id="headerLabel" layoutX="80.0" layoutY="8.0" prefHeight="31.0" prefWidth="145.0" text="The 8-Puzzle">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Label>
+      <Label fx:id="solvedLabel" layoutX="21.0" layoutY="12.0" prefHeight="31.0" prefWidth="238.0" text="The puzzle has been solved!" textFill="#0c9605" visible="false">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Label>
+      <AnchorPane fx:id="tilePane" layoutX="9.0" layoutY="50.0" prefHeight="249.0" prefWidth="249.0" style="-fx-background-color: grey;" />
+      <Button fx:id="helpButton" layoutX="9.0" layoutY="307.0" mnemonicParsing="false" onAction="#handleHelp" prefHeight="31.0" prefWidth="116.0" text="Help" />
+      <Button fx:id="undoButton" layoutX="142.0" layoutY="307.0" mnemonicParsing="false" onAction="#handleUndo" prefHeight="31.0" prefWidth="116.0" text="Undo move" />
+      <Button fx:id="solveButton" layoutX="11.0" layoutY="347.0" mnemonicParsing="false" onAction="#handleSolvePuzzle" prefHeight="31.0" prefWidth="114.0" text="Solve" />
+      <Button layoutX="142.0" layoutY="347.0" mnemonicParsing="false" onAction="#handleNewPuzzle" prefHeight="31.0" prefWidth="116.0" text="Start new puzzle" />
+   </children>
+</AnchorPane>

@@ -1,6 +1,7 @@
 package edu.westga.cs3151.the8puzzle.viewmodel;
 
 import java.util.Queue;
+import java.util.Stack;
 
 import edu.westga.cs3151.the8puzzle.model.Board;
 import edu.westga.cs3151.the8puzzle.model.Move;
@@ -24,6 +25,7 @@ public class PuzzleViewModel {
 	private final BooleanProperty solvedBoardProperty;
 
 	private Board board;
+	private Stack<Position> movesMade;
 
 	/**
 	 * Instantiates a new student info view model.
@@ -40,6 +42,8 @@ public class PuzzleViewModel {
 		}
 		this.setTilesForView();
 		this.solvedBoardProperty = new SimpleBooleanProperty(false);
+		
+		this.movesMade = new Stack<Position>();
 	}
 
 	/**
@@ -77,6 +81,7 @@ public class PuzzleViewModel {
 		Position destinationPos = this.board.getEmptyTilePosition();
 		if (this.board.moveTile(pos, destinationPos)) {
 			this.setTilesForView();
+			this.movesMade.push(destinationPos);
 			if (this.board.isSorted()) {
 				this.solvedBoardProperty.set(true);
 			}
@@ -90,7 +95,13 @@ public class PuzzleViewModel {
 	 * @post the most recent move of a puzzle board tile is undone
 	 */
 	public void undo() {
-		System.out.println("Replace me by instructions to undo the most recent move");
+		if (this.movesMade.empty()) {
+			return;
+		}
+		
+		Position destinationPos = this.board.getEmptyTilePosition();
+		this.board.moveTile(this.movesMade.pop(), destinationPos);
+		this.setTilesForView();
 	}
 
 	/**
@@ -105,6 +116,7 @@ public class PuzzleViewModel {
 	 * @post the next tile that is moved to its correct position
 	 */
 	public void help() {
+		//TODO
 		System.out.println("Replace me by instructions to set the next tile at the correct position.");
 	}
 
@@ -118,6 +130,7 @@ public class PuzzleViewModel {
 	 * @post all tiles of this board are in the correct position
 	 */
 	public void solve() {
+		//TODO
 		System.out.println("Replace me by instructions to solve the puzzle.");
 	}
 
@@ -129,6 +142,7 @@ public class PuzzleViewModel {
 	 */
 	public void newPuzzle() {
 		this.board.shuffle();
+		this.movesMade.clear();
 		this.setTilesForView();
 	}
 

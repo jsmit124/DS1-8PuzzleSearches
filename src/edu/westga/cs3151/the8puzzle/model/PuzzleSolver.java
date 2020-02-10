@@ -52,23 +52,29 @@ public class PuzzleSolver {
 			var nextSearchNode = nextNodes.remove(); // remove a node, nextSearchNode, from nextNodes
 			
 			if (nextSearchNode.nodeReached.isSorted()) { // if the node, nextSearchNode, is a destination node
+				System.out.println("solution found");
 				return nextSearchNode.path; // return the path stored in nextSearchNode
 			}
+			
+			System.out.println("node checked, adding neighbors");
 			
 			var sourcePosition = nextSearchNode.nodeReached.getEmptyTilePosition();
 			var neighbors = sourcePosition.getNeighbors();
 			for (var neighbor : neighbors) { // for all neighbors, neighbor, of the node in nextSearchNode
 				var currBoard = new Board(nextSearchNode.nodeReached);
-				var currPath = nextSearchNode.path;
+				Queue<Move> currPath = new LinkedList<Move>(nextSearchNode.path);
 
-				var newMove = new Move(sourcePosition, neighbor);
+				var newMove = new Move(neighbor, sourcePosition);
 				
 				currPath.add(newMove);
 				currBoard.moveTile(newMove);
 				
 				var newNode = new Node(currBoard, currPath);
 				nextNodes.add(newNode);
+				System.out.println("neighbor added");
 			}
+			
+			System.out.println("Checking next node");
 		}
 		
 		return null; // no solution found

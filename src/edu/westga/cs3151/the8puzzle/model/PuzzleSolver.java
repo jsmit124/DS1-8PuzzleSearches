@@ -3,9 +3,9 @@
  */
 package edu.westga.cs3151.the8puzzle.model;
 
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.Queue;
-import java.util.Stack;
 
 /**
  * Stores information for the PuzzleSolver class
@@ -47,39 +47,52 @@ public class PuzzleSolver {
 		Queue<Node> nextNodes = new LinkedList<Node>(); // new queue of available moves
 		Node source = new Node(this.board, new LinkedList<Move>()); // create source node
 		nextNodes.add(source); // add source to nextNodes
+		var visited = new HashSet<String>();
+		visited.add(this.board.getTileString());
 		
 		while (!nextNodes.isEmpty()) {
 			var nextSearchNode = nextNodes.remove(); // remove a node, nextSearchNode, from nextNodes
+			visited.add(nextSearchNode.nodeReached.getTileString());
 			
 			if (nextSearchNode.nodeReached.isSorted()) { // if the node, nextSearchNode, is a destination node
-				System.out.println("solution found");
 				return nextSearchNode.path; // return the path stored in nextSearchNode
 			}
-			
-			System.out.println("node checked, adding neighbors");
 			
 			var sourcePosition = nextSearchNode.nodeReached.getEmptyTilePosition();
 			var neighbors = sourcePosition.getNeighbors();
 			for (var neighbor : neighbors) { // for all neighbors, neighbor, of the node in nextSearchNode
 				var currBoard = new Board(nextSearchNode.nodeReached);
-				Queue<Move> currPath = new LinkedList<Move>(nextSearchNode.path);
-
 				var newMove = new Move(neighbor, sourcePosition);
-				
-				currPath.add(newMove);
 				currBoard.moveTile(newMove);
-				
-				var newNode = new Node(currBoard, currPath);
-				nextNodes.add(newNode);
-				System.out.println("neighbor added");
+
+				if (!visited.contains(currBoard.getTileString())) {
+					Queue<Move> currPath = new LinkedList<Move>(nextSearchNode.path);					
+					currPath.add(newMove);
+					var newNode = new Node(currBoard, currPath);
+					nextNodes.add(newNode);				
+				}
 			}
-			
-			System.out.println("Checking next node");
 		}
 		
 		return null; // no solution found
 	}
 	
+	public Queue<Move> getHelp() {
+		var solution = this.findSolution();
+		var helpMoves = new LinkedList<Move>();
+		var currNumSorted = this.board.getNumberSortedTiles();
+		var boardClone = new Board(this.board);
+		
+		for (var move : solution) {
+			boardClone.moveTile(move);
+			helpMoves.add(move);
+			if (boardClone.getNumberSortedTiles() > currNumSorted) {
+				break;
+			}
+		}
+		
+		return helpMoves;
+	}
 	
 	private final class Node {
 		public Board nodeReached; // node that has been reached by the algorithm

@@ -118,6 +118,11 @@ public class PuzzleViewModel {
 	 */
 	public void help() {
 		//TODO
+		
+		var solver = new PuzzleSolver(this.board);
+		var moves = solver.getHelp();
+		this.traceMoves(moves);
+		
 		System.out.println("Replace me by instructions to set the next tile at the correct position.");
 	}
 

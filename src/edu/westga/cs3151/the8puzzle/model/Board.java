@@ -223,7 +223,13 @@ public class Board {
 		return count;
 	}
 	
+	/**
+	 * Returns the string version of the current placement of the board pieces
+	 * 
+	 * @return
+	 * 		A string representing the current state of the board
+	 */
 	public String getTileString() {
-		return "" + tiles[0][0] + tiles[0][1] + tiles[0][2] + + tiles[1][0] + tiles[1][1] + tiles[1][2] + tiles[2][0] + tiles[2][1] + tiles[2][2];
+		return "" + this.tiles[0][0] + this.tiles[0][1] + this.tiles[0][2] + this.tiles[1][0] + this.tiles[1][1] + this.tiles[1][2] + this.tiles[2][0] + this.tiles[2][1] + this.tiles[2][2];
 	}
 }

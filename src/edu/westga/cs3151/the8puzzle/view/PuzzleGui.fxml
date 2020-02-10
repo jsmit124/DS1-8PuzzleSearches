@@ -21,6 +21,6 @@
       <Button fx:id="helpButton" layoutX="9.0" layoutY="307.0" mnemonicParsing="false" onAction="#handleHelp" prefHeight="31.0" prefWidth="116.0" text="Help" />
       <Button fx:id="undoButton" layoutX="142.0" layoutY="307.0" mnemonicParsing="false" onAction="#handleUndo" prefHeight="31.0" prefWidth="116.0" text="Undo move" />
       <Button fx:id="solveButton" layoutX="11.0" layoutY="347.0" mnemonicParsing="false" onAction="#handleSolvePuzzle" prefHeight="31.0" prefWidth="114.0" text="Solve" />
-      <Button layoutX="142.0" layoutY="347.0" mnemonicParsing="false" onAction="#handleNewPuzzle" prefHeight="31.0" prefWidth="116.0" text="Start new puzzle" />
+      <Button fx:id="newButton" layoutX="142.0" layoutY="347.0" mnemonicParsing="false" onAction="#handleNewPuzzle" prefHeight="31.0" prefWidth="116.0" text="Start new puzzle" />
    </children>
 </AnchorPane>

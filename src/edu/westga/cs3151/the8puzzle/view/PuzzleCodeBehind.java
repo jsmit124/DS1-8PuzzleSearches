@@ -38,6 +38,9 @@ public class PuzzleCodeBehind {
 	
 	@FXML
 	private Button solveButton;
+	
+	@FXML
+	private Button newButton;
 
 	private PuzzleViewModel viewModel;
 	private final BooleanProperty solvedBoardProperty;
@@ -106,12 +109,13 @@ public class PuzzleCodeBehind {
 		this.viewModel.newPuzzle();
 		this.headerLabel.setVisible(true);
 		this.solvedLabel.setVisible(false);
-		this.setButtonDisable(false);
+		this.setButtonAndTileDisable(false);
 		this.solvedBoardProperty.set(false);
 	}
 
 	@FXML
 	void handleSolvePuzzle(ActionEvent event) {
+		this.setButtonDisabled(true);
 		this.viewModel.solve();
 	}
 
@@ -119,11 +123,12 @@ public class PuzzleCodeBehind {
 		if (this.solvedBoardProperty.get()) {
 			this.headerLabel.setVisible(false);
 			this.solvedLabel.setVisible(true);
-			this.setButtonDisable(true);
+			this.setButtonAndTileDisable(true);
+			this.newButton.setDisable(false);
 		}
 	}
 	
-	private void setButtonDisable(boolean disabled) {
+	private void setButtonAndTileDisable(boolean disabled) {
 		this.helpButton.setDisable(disabled);
 		this.undoButton.setDisable(disabled);
 		this.solveButton.setDisable(disabled);
@@ -131,4 +136,13 @@ public class PuzzleCodeBehind {
 			tile.setDisable(disabled);
 		}
 	}
+	
+	private void setButtonDisabled(boolean disabled) {
+		this.helpButton.setDisable(disabled);
+		this.undoButton.setDisable(disabled);
+		this.solveButton.setDisable(disabled);
+		this.newButton.setDisable(disabled);
+
+	}
+	
 }

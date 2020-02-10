@@ -44,23 +44,23 @@ public class PuzzleSolver {
 	 * 		the moves required to optimally solve the board
 	 */
 	public Queue<Move> findSolution() {
-		Queue<Node> nextNodes = new LinkedList<Node>(); // new queue of available moves
-		Node source = new Node(this.board, new LinkedList<Move>()); // create source node
-		nextNodes.add(source); // add source to nextNodes
+		Queue<Node> nextNodes = new LinkedList<Node>(); 
+		Node source = new Node(this.board, new LinkedList<Move>()); 
+		nextNodes.add(source); 
 		var visited = new HashSet<String>();
 		visited.add(this.board.getTileString());
 		
 		while (!nextNodes.isEmpty()) {
-			var nextSearchNode = nextNodes.remove(); // remove a node, nextSearchNode, from nextNodes
+			var nextSearchNode = nextNodes.remove(); 
 			visited.add(nextSearchNode.nodeReached.getTileString());
 			
-			if (nextSearchNode.nodeReached.isSorted()) { // if the node, nextSearchNode, is a destination node
-				return nextSearchNode.path; // return the path stored in nextSearchNode
+			if (nextSearchNode.nodeReached.isSorted()) { 
+				return nextSearchNode.path; 
 			}
 			
 			var sourcePosition = nextSearchNode.nodeReached.getEmptyTilePosition();
 			var neighbors = sourcePosition.getNeighbors();
-			for (var neighbor : neighbors) { // for all neighbors, neighbor, of the node in nextSearchNode
+			for (var neighbor : neighbors) { 
 				var currBoard = new Board(nextSearchNode.nodeReached);
 				var newMove = new Move(neighbor, sourcePosition);
 				currBoard.moveTile(newMove);
@@ -74,9 +74,15 @@ public class PuzzleSolver {
 			}
 		}
 		
-		return null; // no solution found
+		return null;
 	}
 	
+	/**
+	 * Only returns the sequence of moves to solve the next piece of the puzzle
+	 * 
+	 * @return
+	 * 	The queue of moves which will result in the next piece of the puzzle being solved
+	 */
 	public Queue<Move> getHelp() {
 		var solution = this.findSolution();
 		var helpMoves = new LinkedList<Move>();
@@ -95,8 +101,8 @@ public class PuzzleSolver {
 	}
 	
 	private final class Node {
-		public Board nodeReached; // node that has been reached by the algorithm
-		private Queue<Move> path; // path through which this node was reached
+		private Board nodeReached;
+		private Queue<Move> path;
 		
 		private Node(Board nodeReached, Queue<Move> queueMoves) {
 			this.path = queueMoves;

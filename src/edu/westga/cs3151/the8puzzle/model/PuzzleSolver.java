@@ -7,6 +7,8 @@ import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.Queue;
 
+import edu.westga.cs3151.the8puzzle.enumerator.PathType;
+
 /**
  * Stores information for the PuzzleSolver class
  * 
@@ -40,31 +42,37 @@ public class PuzzleSolver {
 	 * @pre board != null
 	 * @post none
 	 * 
+	 * @param type
+	 * 		the type of path to find for the puzzle
+	 * 
 	 * @return
 	 * 		the moves required to optimally solve the board
 	 */
-	public Queue<Move> findSolution() {
+	public Queue<Move> findSolution(PathType type) {
 		Queue<Node> nextNodes = new LinkedList<Node>(); 
 		Node source = new Node(this.board, new LinkedList<Move>()); 
 		nextNodes.add(source); 
 		var visited = new HashSet<String>();
 		visited.add(this.board.getTileString());
-		
+		var currNumSorted = this.board.getNumberSortedTiles();
 		while (!nextNodes.isEmpty()) {
 			var nextSearchNode = nextNodes.remove(); 
 			visited.add(nextSearchNode.nodeReached.getTileString());
-			
-			if (nextSearchNode.nodeReached.isSorted()) { 
-				return nextSearchNode.path; 
+			if (type == PathType.Solve) {
+				if (nextSearchNode.nodeReached.isSorted()) { 
+					return nextSearchNode.path; 
+				}				
+			} else {
+				if (nextSearchNode.nodeReached.getNumberSortedTiles() > currNumSorted) { 
+					return nextSearchNode.path; 
+				}
 			}
-			
 			var sourcePosition = nextSearchNode.nodeReached.getEmptyTilePosition();
 			var neighbors = sourcePosition.getNeighbors();
 			for (var neighbor : neighbors) { 
 				var currBoard = new Board(nextSearchNode.nodeReached);
 				var newMove = new Move(neighbor, sourcePosition);
 				currBoard.moveTile(newMove);
-
 				if (!visited.contains(currBoard.getTileString())) {
 					Queue<Move> currPath = new LinkedList<Move>(nextSearchNode.path);					
 					currPath.add(newMove);
@@ -73,31 +81,7 @@ public class PuzzleSolver {
 				}
 			}
 		}
-		
 		return null;
-	}
-	
-	/**
-	 * Only returns the sequence of moves to solve the next piece of the puzzle
-	 * 
-	 * @return
-	 * 	The queue of moves which will result in the next piece of the puzzle being solved
-	 */
-	public Queue<Move> getHelp() {
-		var solution = this.findSolution();
-		var helpMoves = new LinkedList<Move>();
-		var currNumSorted = this.board.getNumberSortedTiles();
-		var boardClone = new Board(this.board);
-		
-		for (var move : solution) {
-			boardClone.moveTile(move);
-			helpMoves.add(move);
-			if (boardClone.getNumberSortedTiles() > currNumSorted) {
-				break;
-			}
-		}
-		
-		return helpMoves;
 	}
 	
 	private final class Node {

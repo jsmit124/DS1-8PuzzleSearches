@@ -3,6 +3,7 @@ package edu.westga.cs3151.the8puzzle.viewmodel;
 import java.util.Queue;
 import java.util.Stack;
 
+import edu.westga.cs3151.the8puzzle.enumerator.PathType;
 import edu.westga.cs3151.the8puzzle.model.Board;
 import edu.westga.cs3151.the8puzzle.model.Move;
 import edu.westga.cs3151.the8puzzle.model.Position;
@@ -118,7 +119,7 @@ public class PuzzleViewModel {
 	 */
 	public void help() {
 		var solver = new PuzzleSolver(this.board);
-		var moves = solver.getHelp();
+		var moves = solver.findSolution(PathType.Help);
 		this.traceMoves(moves);
 	}
 
@@ -133,7 +134,7 @@ public class PuzzleViewModel {
 	 */
 	public void solve() {
 		var solver = new PuzzleSolver(this.board);
-		var moves = solver.findSolution();
+		var moves = solver.findSolution(PathType.Solve);
 		this.traceMoves(moves);
 	}
 

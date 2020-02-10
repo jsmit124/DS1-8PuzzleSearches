@@ -6,6 +6,7 @@ import java.util.Stack;
 import edu.westga.cs3151.the8puzzle.model.Board;
 import edu.westga.cs3151.the8puzzle.model.Move;
 import edu.westga.cs3151.the8puzzle.model.Position;
+import edu.westga.cs3151.the8puzzle.model.PuzzleSolver;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.beans.property.BooleanProperty;
@@ -130,8 +131,9 @@ public class PuzzleViewModel {
 	 * @post all tiles of this board are in the correct position
 	 */
 	public void solve() {
-		//TODO
-		System.out.println("Replace me by instructions to solve the puzzle.");
+		var solver = new PuzzleSolver(this.board);
+		var moves = solver.findSolution();
+		this.traceMoves(moves);
 	}
 
 	/**

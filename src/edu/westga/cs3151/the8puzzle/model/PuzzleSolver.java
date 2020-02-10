@@ -3,6 +3,7 @@
  */
 package edu.westga.cs3151.the8puzzle.model;
 
+import java.util.LinkedList;
 import java.util.Queue;
 import java.util.Stack;
 
@@ -43,30 +44,44 @@ public class PuzzleSolver {
 	 * 		the moves required to optimally solve the board
 	 */
 	public Queue<Move> findSolution() {
-		Stack<Node> moves = new Stack<Node>(); // use a queue for BFS
-		Node rootNode = new Node(this.board.getEmptyTilePosition());
-		moves.push(rootNode);
+		Queue<Node> nextNodes = new LinkedList<Node>(); // new queue of available moves
+		Node source = new Node(this.board, new LinkedList<Move>()); // create source node
+		nextNodes.add(source); // add source to nextNodes
 		
-		while (!moves.empty()) {
-			var neighbors = moves.pop().value.getNeighbors();
-			for (var value : neighbors) {
-				Node newNode = new Node(value);
-				moves.push(newNode);
+		while (!nextNodes.isEmpty()) {
+			var nextSearchNode = nextNodes.remove(); // remove a node, nextSearchNode, from nextNodes
+			
+			if (nextSearchNode.nodeReached.isSorted()) { // if the node, nextSearchNode, is a destination node
+				return nextSearchNode.path; // return the path stored in nextSearchNode
+			}
+			
+			var sourcePosition = nextSearchNode.nodeReached.getEmptyTilePosition();
+			var neighbors = sourcePosition.getNeighbors();
+			for (var neighbor : neighbors) { // for all neighbors, neighbor, of the node in nextSearchNode
+				var currBoard = new Board(nextSearchNode.nodeReached);
+				var currPath = nextSearchNode.path;
+
+				var newMove = new Move(sourcePosition, neighbor);
+				
+				currPath.add(newMove);
+				currBoard.moveTile(newMove);
+				
+				var newNode = new Node(currBoard, currPath);
+				nextNodes.add(newNode);
 			}
 		}
 		
-		return null;
+		return null; // no solution found
 	}
 	
 	
 	private final class Node {
-		private Position value;
-		private stack
+		public Board nodeReached; // node that has been reached by the algorithm
+		private Queue<Move> path; // path through which this node was reached
 		
-		private Node(Position item) {
-			this.value = item;
-			this.next = null;
-			this.previous = null;
+		private Node(Board nodeReached, Queue<Move> queueMoves) {
+			this.path = queueMoves;
+			this.nodeReached = nodeReached;
 		}
 	}
 
